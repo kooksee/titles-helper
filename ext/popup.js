@@ -1,5 +1,11 @@
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        console.log(request)
+    }
+);
+
 $('#1234567').change(function (e) {
-    clear()
+    clear();
     chrome.tabs.getSelected(null, function (tab) {
         chrome.tabs.sendRequest(tab.id, {type: 'css', query: e.currentTarget.value},
             function (response) {
