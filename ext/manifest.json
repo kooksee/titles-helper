@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "titles finder",
+  "description": "辅助获取当前页面的标题",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "Tests"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*"
+      ],
+      "js": [
+        "content_scripts_tests.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "webNavigation",
+    "storage",
+    "tabs",
+    "privacy",
+    "cookies",
+    "http://*/*",
+    "contentSettings",
+    "alarms",
+    "activeTab",
+    "tabs",
+    "bookmarks",
+    "browsingData",
+    "fontSettings",
+    "history"
+  ],
+  "web_accessible_resources": [
+    "*"
+  ]
+}
