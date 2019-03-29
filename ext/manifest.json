@@ -1,40 +1,28 @@
 {
+  "name": "CSS and XPath checker",
+  "version": "0.10.0",
+  "description": "A helper tool for to confirm CSS and XPath selector.",
+  "icons": {
+    "128": "icon_128.png"
+  },
   "manifest_version": 2,
-  "name": "titles finder",
-  "description": "辅助获取当前页面的标题",
-  "version": "1.0",
   "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html",
-    "default_title": "Tests"
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {
       "matches": [
-        "http://*/*"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
-        "content_scripts_tests.js"
+        "cxchecker.js"
       ]
     }
   ],
   "permissions": [
-    "webNavigation",
-    "storage",
     "tabs",
-    "privacy",
-    "cookies",
     "http://*/*",
-    "contentSettings",
-    "alarms",
-    "activeTab",
-    "tabs",
-    "bookmarks",
-    "browsingData",
-    "fontSettings",
-    "history"
-  ],
-  "web_accessible_resources": [
-    "*"
+    "https://*/*"
   ]
 }
