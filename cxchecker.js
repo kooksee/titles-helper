@@ -51,6 +51,10 @@ document.onmouseover = function (ev) {
             _n[i].style.border = 'solid 2px red';
         }
 
+
+        document.getElementById("-cc-wrapper").getElementsByTagName("textarea")[0].value = _query;
+
+
         const __p = document.getElementById("_123456");
         __p.value = _query;
         __p.select();
@@ -60,6 +64,7 @@ document.onmouseover = function (ev) {
     if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
         // 当前标题的数量
         node.style.background = '#cc9e18';
+        document.getElementById("-cc-wrapper").getElementsByTagName("textarea")[0].value = node.localName + `${node.classList.length !== 0 ? "." + node.classList[0] : ""}`;
     }
 
 };
@@ -71,42 +76,17 @@ document.onmouseout = function (ev) {
         return
     }
 
-    const oEvent = ev || event;
-
-    let node = oEvent.srcElement;
+    let node = ev.srcElement;
     if (node.tagName === "A") {
 
-        let _query = node.localName + `${node.className !== "" ? "." + node.className : ""}`;
-        let _tl = document.querySelectorAll(_query).length;
-        let _pnode = node;
-        while (1) {
-            _pnode = _pnode.parentNode;
-            let _pquery = _pnode.localName + " " + _query;
-
-            // 检查标签
-            let _tl1 = document.querySelectorAll(_pquery).length;
-            if (_tl === _tl1) {
-                break
-            }
-
-            _pquery = _pnode.localName + `${_pnode.className !== "" ? "." + _pnode.classList[0] : ""}` + " " + _query;
-            _tl1 = document.querySelectorAll(_pquery).length;
-            if (_tl === _tl1) {
-                break
-            }
-
-            _query = _pquery;
-            _tl = _tl1;
-        }
-
-        const _n = document.querySelectorAll(_query);
+        const __p = document.getElementById("_123456");
+        const _n = document.querySelectorAll(__p.value);
         for (let i = 0; i < _n.length; i++) {
             _n[i].style.background = '';
             _n[i].style.border = '';
         }
     }
 
-    node = oEvent.srcElement;
     if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
         node.style.background = '';
     }
@@ -120,10 +100,24 @@ chrome.extension.onRequest.addListener(
         }
 
         __actived = request.is_actived;
+
+        if (__actived) {
+
+            if (document.getElementById("_123456") == null) {
+                const _p = document.createElement("input");
+                _p.id = "_123456";
+                document.body.append(_p);
+            }
+
+            const _cc = document.getElementById("-cc-wrapper");
+            _cc.classList != null ? _cc.classList.add("active") : null;
+
+        } else {
+            const _p = document.getElementById("_123456");
+            _p != null ? _p.remove() : null;
+        }
+
         sendResponse({result: "ok"});
     }
 );
 
-const _p = document.createElement("input");
-_p.id = "_123456";
-document.body.append(_p);
