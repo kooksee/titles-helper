@@ -1,6 +1,12 @@
 // 该页面会被加载注入到页面当中,通过页面元素和css去操作页面的元素，但是页面元素不能直接访问该js
 
+let __actived = false;
+
 document.onmouseover = function (ev) {
+    if (!__actived) {
+        return
+    }
+
     const oEvent = ev || event;
     const node = oEvent.srcElement;
 
@@ -45,6 +51,11 @@ document.onmouseover = function (ev) {
 };
 
 document.onmouseout = function (ev) {
+    if (!__actived) {
+        return
+    }
+
+
     const oEvent = ev || event;
     const node = oEvent.srcElement;
 
@@ -82,19 +93,14 @@ document.onmouseout = function (ev) {
 };
 
 
-function onReady() {
-    chrome.extension.onRequest.addListener(
-        function (request, sender, sendResponse) {
-            for (var i = 0; i < result.length; i++) {
-                var result = document.querySelectorAll(request.query);
-                var node = result[i];
-                node.style.background = '#c88';
-                node.style.border = 'solid 2px red';
-            }
-            sendResponse({length: result.length});
-        }
-    );
-}
+chrome.extension.onRequest.addListener(
+    (request, sender, sendResponse) => {
+        __actived = request.is_actived;
+        console.log(request.is_actived);
+        sendResponse({result: "ok"});
+    }
+);
+
 
 if (document.readyState !== 'loading') {
     onReady();
