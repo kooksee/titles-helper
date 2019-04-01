@@ -1,8 +1,4 @@
-document.onmousedown = function (ev) {
-    const oEvent = ev || event;
-    console.log(oEvent.button);
-    console.log(oEvent);
-};
+// 该页面会被加载注入到页面当中,通过页面元素和css去操作页面的元素，但是页面元素不能直接访问该js
 
 document.onmouseover = function (ev) {
     const oEvent = ev || event;
@@ -35,12 +31,16 @@ document.onmouseover = function (ev) {
             _tl = _tl1;
         }
 
-        console.log(_query);
         const _n = document.querySelectorAll(_query);
         for (let i = 0; i < _n.length; i++) {
             _n[i].style.background = '#c88';
             _n[i].style.border = 'solid 2px red';
         }
+
+        let _p = document.getElementById("_123456");
+        _p.value = _query;
+        _p.select();
+        document.execCommand("copy");
     }
 };
 
@@ -73,7 +73,6 @@ document.onmouseout = function (ev) {
             _tl = _tl1;
         }
 
-        console.log(_query);
         const _n = document.querySelectorAll(_query);
         for (let i = 0; i < _n.length; i++) {
             _n[i].style.background = '';
@@ -102,3 +101,8 @@ if (document.readyState !== 'loading') {
 } else {
     document.addEventListener('DOMContentLoaded', onReady);
 }
+
+const _p = document.createElement("input");
+_p.id = "_123456";
+// _p.setAttribute("type", "hidden");
+document.body.append(_p);

@@ -3,11 +3,17 @@
   "version": "0.10.0",
   "description": "A helper tool for to confirm CSS and XPath selector.",
   "icons": {
-    "128": "icon_128.png"
+    "128": "icon_128.png",
+    "32": "icon_32.png"
   },
   "manifest_version": 2,
   "browser_action": {
-    "default_popup": "popup.html"
+    "name": "Click to toggle GetSelector extension"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
@@ -22,6 +28,8 @@
   ],
   "permissions": [
     "tabs",
+    "activeTab",
+    "declarativeContent",
     "http://*/*",
     "https://*/*"
   ]
