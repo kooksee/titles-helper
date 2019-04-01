@@ -1,20 +1,28 @@
 // 该页面会被加载注入到页面当中,通过页面元素和css去操作页面的元素，但是页面元素不能直接访问该js
 
 let __actived = false;
+document.onclick = function (e) {
+    const node = e.srcElement;
+    const _p = document.getElementById("_123456");
+    _p.value = node.localName + `${node.classList.length !== 0 ? "." + node.classList[0] : ""}`;
+    _p.select();
+    document.execCommand("copy");
+};
 
 document.onmouseover = function (ev) {
+    ev.preventDefault();
+
     if (!__actived) {
         return
     }
 
-    const oEvent = ev || event;
-    const node = oEvent.srcElement;
+    let node = ev.srcElement;
 
     if (node.tagName === "A") {
         // 获取当前标题tag和class
 
         // 当前标题的数量
-        let _query = node.localName + `${node.className !== "" ? "." + node.className : ""}`;
+        let _query = node.localName + `${node.classList.length !== 0 ? "." + node.classList[0] : ""}`;
         let _tl = document.querySelectorAll(_query).length;
         let _pnode = node;
         while (1) {
@@ -43,22 +51,29 @@ document.onmouseover = function (ev) {
             _n[i].style.border = 'solid 2px red';
         }
 
-        let _p = document.getElementById("_123456");
-        _p.value = _query;
-        _p.select();
+        const __p = document.getElementById("_123456");
+        __p.value = _query;
+        __p.select();
         document.execCommand("copy");
     }
+
+    if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
+        // 当前标题的数量
+        node.style.background = '#cc9e18';
+    }
+
 };
 
 document.onmouseout = function (ev) {
+    ev.preventDefault();
+
     if (!__actived) {
         return
     }
 
-
     const oEvent = ev || event;
-    const node = oEvent.srcElement;
 
+    let node = oEvent.srcElement;
     if (node.tagName === "A") {
 
         let _query = node.localName + `${node.className !== "" ? "." + node.className : ""}`;
@@ -90,25 +105,25 @@ document.onmouseout = function (ev) {
             _n[i].style.border = '';
         }
     }
+
+    node = oEvent.srcElement;
+    if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
+        node.style.background = '';
+    }
 };
 
 
 chrome.extension.onRequest.addListener(
     (request, sender, sendResponse) => {
+        if (request.type === "browser") {
+            window.location.reload();
+        }
+
         __actived = request.is_actived;
-        console.log(request.is_actived);
         sendResponse({result: "ok"});
     }
 );
 
-
-if (document.readyState !== 'loading') {
-    onReady();
-} else {
-    document.addEventListener('DOMContentLoaded', onReady);
-}
-
 const _p = document.createElement("input");
 _p.id = "_123456";
-// _p.setAttribute("type", "hidden");
 document.body.append(_p);

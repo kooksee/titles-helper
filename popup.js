@@ -46,18 +46,18 @@ function clear() {
         }
     )
 }
-
-chrome.browserAction.onClicked.addListener(tab => {
-
-    chrome.tabs.executeScript(tab.id, {
-        code: "alert('sss')"
-    });
-    console.log(tab, "browserAction");
-});
-
-chrome.tabs.onActivated.addListener(tab => {
-    chrome.tabs.executeScript(tabId, {
-        code: "window.__gs && window.__gs.copyToClipboard()"
-    });
-    console.log(tab, "tabs");
-});
+//
+// chrome.browserAction.onClicked.addListener(tab => {
+//
+//     chrome.tabs.executeScript(tab.id, {
+//         code: "alert('sss')"
+//     });
+//     console.log(tab, "browserAction");
+// });
+//
+// chrome.tabs.onActivated.addListener(tab => {
+//     chrome.tabs.executeScript(tabId, {
+//         code: "window.__gs && window.__gs.copyToClipboard()"
+//     });
+//     console.log(tab, "tabs");
+// });
