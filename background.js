@@ -24,33 +24,37 @@ function IsActivated() {
                 })
         });
 
-        // if (__actived) {
-        //     chrome.contextMenus.create({
-        //         id: MENU_ID,
-        //         title: "鲁班选择器复制",
-        //         contexts: ["all"],
-        //         documentUrlPatterns: ["*://*/*"],
-        //         onclick: e => {
-        //             if (e.menuItemId !== MENU_ID) {
-        //                 return;
-        //             }
-        //
-        //             chrome.tabs.getSelected(null, function (tab) {
-        //                 chrome.tabs.executeScript(tab.id, {code: "_Copy()"});
-        //             });
-        //         }
-        //     });
-        // }
+        if (__actived) {
+            chrome.contextMenus.create({
+                id: MENU_ID,
+                title: "鲁班选择器复制复制复制复制",
+                contexts: ["all"],
+                documentUrlPatterns: ["*://*/*"],
+                onclick: e => {
+                    if (e.menuItemId !== MENU_ID) {
+                        return;
+                    }
+
+                    chrome.tabs.getSelected(null, function (tab) {
+                        chrome.tabs.executeScript(tab.id, {code: "_Copy()"});
+                    });
+                }
+            });
+        }
     });
 
     const __tb = async tab => {
         chrome.tabs.getSelected(null, function (tab) {
+            if (tab.url.includes("luban.yuanben.site")) {
+                return
+            }
+
             chrome.tabs.sendRequest(tab.id, {type: "tags", is_actived: __actived},
                 function (response) {
                     console.log(response)
                 })
         });
-        console.log(tab, "tabs.onActivated");
+        // console.log(tab, "tabs.onActivated");
     };
 
     chrome.tabs.onActivated.addListener(__tb);

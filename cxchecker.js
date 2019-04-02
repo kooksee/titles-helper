@@ -1,15 +1,34 @@
 // 该页面会被加载注入到页面当中,通过页面元素和css去操作页面的元素，但是页面元素不能直接访问该js
 
-let __actived = false;
-document.onclick = function (e) {
-    const node = e.srcElement;
-    const _p = document.getElementById("_123456");
-    _p.value = node.localName + `${node.classList.length !== 0 ? "." + node.classList[0] : ""}`;
-    _p.select();
-    document.execCommand("copy");
-};
 
-document.onmouseover = function (ev) {
+function _Copy() {
+    const __p = document.getElementById("_123456");
+    __p.type = "";
+    __p.value = a_query;
+    __p.select();
+    document.execCommand("copy");
+    __p.type = "hidden";
+}
+
+
+let __actived = false;
+let a_query = "";
+
+function _onclick(e) {
+    const node = e.srcElement;
+    if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
+        const _p = document.getElementById("_123456");
+        if (_p != null) {
+            _p.type = "";
+            _p.value = node.localName + `${node.classList.length !== 0 ? "." + node.classList[0] : ""}`;
+            _p.select();
+            document.execCommand("copy");
+            _p.type = "hidden";
+        }
+    }
+}
+
+function _onmouseover(ev) {
     ev.preventDefault();
 
     if (!__actived) {
@@ -51,25 +70,16 @@ document.onmouseover = function (ev) {
             _n[i].style.border = 'solid 2px red';
         }
 
-
-        document.getElementById("-cc-wrapper").getElementsByTagName("textarea")[0].value = _query;
-
-
-        const __p = document.getElementById("_123456");
-        __p.value = _query;
-        __p.select();
-        document.execCommand("copy");
+        a_query = _query;
     }
 
     if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
         // 当前标题的数量
         node.style.background = '#cc9e18';
-        document.getElementById("-cc-wrapper").getElementsByTagName("textarea")[0].value = node.localName + `${node.classList.length !== 0 ? "." + node.classList[0] : ""}`;
     }
+}
 
-};
-
-document.onmouseout = function (ev) {
+function _onmouseout(ev) {
     ev.preventDefault();
 
     if (!__actived) {
@@ -79,8 +89,7 @@ document.onmouseout = function (ev) {
     let node = ev.srcElement;
     if (node.tagName === "A") {
 
-        const __p = document.getElementById("_123456");
-        const _n = document.querySelectorAll(__p.value);
+        const _n = a_query !== "" ? document.querySelectorAll(a_query) : [];
         for (let i = 0; i < _n.length; i++) {
             _n[i].style.background = '';
             _n[i].style.border = '';
@@ -90,15 +99,11 @@ document.onmouseout = function (ev) {
     if (node.tagName === "P" || node.tagName === "ARTICLE" || node.tagName === "DIV") {
         node.style.background = '';
     }
-};
+}
 
 
 chrome.extension.onRequest.addListener(
     (request, sender, sendResponse) => {
-        if (request.type === "browser") {
-            window.location.reload();
-        }
-
         __actived = request.is_actived;
 
         if (__actived) {
@@ -106,15 +111,21 @@ chrome.extension.onRequest.addListener(
             if (document.getElementById("_123456") == null) {
                 const _p = document.createElement("input");
                 _p.id = "_123456";
+                _p.type = "hidden";
                 document.body.append(_p);
             }
 
-            const _cc = document.getElementById("-cc-wrapper");
-            _cc.classList != null ? _cc.classList.add("active") : null;
+            document.onclick = _onclick;
+            document.onmouseover = _onmouseover;
+            document.onmouseout = _onmouseout;
 
         } else {
             const _p = document.getElementById("_123456");
             _p != null ? _p.remove() : null;
+
+            document.onclick = null;
+            document.onmouseover = null;
+            document.onmouseout = null;
         }
 
         sendResponse({result: "ok"});
