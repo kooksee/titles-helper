@@ -1,7 +1,7 @@
 {
-  "name": "CSS and XPath checker",
+  "name": "titles helper",
   "version": "0.10.0",
-  "description": "A helper tool for to confirm CSS and XPath selector.",
+  "description": "标题和整体css元素提取",
   "icons": {
     "128": "icon_128.png",
     "32": "icon_32.png"
